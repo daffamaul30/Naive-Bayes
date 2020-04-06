@@ -13,22 +13,45 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn import metrics
 
+"""## Mount & Read File From Drive
+
+Bisa dirubah jika tidak ingin membaca file dari drive dengan :
+
+
+dataset = pd.read_csv("path or filename(jika dalam satu folder)")
+"""
+
 from google.colab import drive 
 drive.mount('/content/gdrive')
-dataset = pd.read_csv("gdrive/My Drive/Colab Notebooks/datasetClassification.csv")
+dataset = pd.read_csv("gdrive/My Drive/Colab Notebooks/fifa20.csv")
+
+"""## Mengambil kolom/fitur yang diperlukan saja. Berdasarkan Data Exploration"""
+
+dataset = dataset[['skill_dribbling','skill_curve','skill_ball_control','skill_moves']]
 
 dataset.head()
+
+"""## Penentuan Label
+
+menjadikan kolom "skill_moves" menjadi label
+"""
 
 #skill_moves sbg label
 label = dataset['skill_moves'].tolist()
 dataset = dataset.drop(columns=['skill_moves'])
 # print(dataset)
 
+"""## Split Menjadi Train dan Test
+
+dengan porsi Train 70% Test 30%
+"""
+
 x_train, x_test, y_train, y_test = train_test_split(dataset, label, test_size=0.3, random_state = 0)
-# print(x_train)
-# print('panjang x_train : ',len(x_train))
-# print('panjang y_train : ',len(y_train))
-# print(y_train)
+
+"""## Training Process
+
+proses pembentukan model dengan metode Naive bayes
+"""
 
 model = GaussianNB()
 model.fit(x_train,y_train)
